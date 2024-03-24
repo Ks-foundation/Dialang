@@ -39,31 +39,19 @@ void dia_print(const char* format, ...) {
 }
 
 void var(const char* varname, const char* value) {
-    // Suppressing the print statements for variable declaration
-    /*
-    if (varname && value) {
-        printf("Variable '%s' assigned value '%s'\n", varname, value);
-        printf("%s: %s\n", varname, value);
-    }
-    */
+    // No message printing for variable declaration
 }
 
 void editvar(const char* varname, const char* value) {
-    // Suppressing the print statements for variable modification
-    /*
-    if (varname && value) {
-        printf("Variable '%s' edited to value '%s'\n", varname, value);
-        printf("%s: %s\n", varname, value);
-    }
-    */
+    // No message printing for variable modification
 }
 
 void function_declaration(const char* function_name, const char* parameters) {
-    printf("Function '%s' declared with parameters '%s'\n", function_name, parameters);
+    // No message printing for function declaration
 }
 
 void function_call(const char* function_name, const char* arguments) {
-    printf("Calling function '%s' with arguments '%s'\n", function_name, arguments);
+    // No message printing for function call
 }
 
 void include_module(const char* module_filename);
@@ -90,40 +78,47 @@ void execute_module(FILE* module_file) {
         if (strcmp(token, "use") == 0) {
             char* module_filename = strtok(NULL, " \n");
             include_module(module_filename);
-        } else if (strcmp(token, "Print") == 0) {
+        }
+        else if (strcmp(token, "Print") == 0) {
             char format[MAX_LINE_LENGTH];
             char* fmt = strtok(NULL, "\"");
             if (fmt != NULL) {
                 strncpy(format, fmt, sizeof(format));
                 Print(format);
             }
-        } else if (strcmp(token, "input") == 0) {
+        }
+        else if (strcmp(token, "input") == 0) {
             char format[MAX_LINE_LENGTH];
             char* fmt = strtok(NULL, "\"");
             if (fmt != NULL) {
                 strncpy(format, fmt, sizeof(format));
                 input(format);
             }
-        } else if (strcmp(token, "dia_print") == 0) {
+        }
+        else if (strcmp(token, "dia_print") == 0) {
             char format[MAX_LINE_LENGTH];
             char* fmt = strtok(NULL, "\"");
             if (fmt != NULL) {
                 strncpy(format, fmt, sizeof(format));
                 dia_print(format);
             }
-        } else if (strcmp(token, "var") == 0) {
+        }
+        else if (strcmp(token, "var") == 0) {
             char* varname = strtok(NULL, ":");
             char* value = strtok(NULL, ":");
             var(varname, value);
-        } else if (strcmp(token, "Editvar") == 0) {
+        }
+        else if (strcmp(token, "Editvar") == 0) {
             char* varname = strtok(NULL, ":");
             char* value = strtok(NULL, ":");
             editvar(varname, value);
-        } else if (strcmp(token, "function") == 0) {
+        }
+        else if (strcmp(token, "function") == 0) {
             char* function_name = strtok(NULL, " \n");
             char* parameters = strtok(NULL, " \n");
             function_declaration(function_name, parameters);
-        } else if (strcmp(token, "calculate") == 0) {
+        }
+        else if (strcmp(token, "calculate") == 0) {
             char expression[MAX_LINE_LENGTH];
             char* expr = strtok(NULL, "\"");
             if (expr != NULL) {
@@ -131,44 +126,54 @@ void execute_module(FILE* module_file) {
                 double result = evaluate_expression(expression);
                 printf("Result: %.2f\n", result);
             }
-        } else if (strcmp(token, "execute") == 0) {
+        }
+        else if (strcmp(token, "execute") == 0) {
             char* module_filename = strtok(NULL, " \n");
             FILE* nested_module_file = fopen(module_filename, "r");
             if (nested_module_file != NULL) {
                 execute_module(nested_module_file);
                 fclose(nested_module_file);
-            } else {
+            }
+            else {
                 perror("Error opening nested module file");
             }
-        } else if (strcmp(token, "if") == 0) {
+        }
+        else if (strcmp(token, "if") == 0) {
             // Implement securely
             char* condition = strtok(NULL, "\n");
             if (condition) {
                 // implement securely
-            } else {
+            }
+            else {
                 printf("Missing condition for if statement\n");
             }
-        } else if (strcmp(token, "for") == 0) {
+        }
+        else if (strcmp(token, "for") == 0) {
             // Implement securely
             char* loop_variable = strtok(NULL, " \n");
             char* range = strtok(NULL, " \n");
             if (loop_variable && range) {
                 // implement securely
-            } else {
+            }
+            else {
                 printf("Missing loop variable or range for for loop\n");
             }
-        } else if (strcmp(token, "breakif") == 0) {
+        }
+        else if (strcmp(token, "breakif") == 0) {
             // Implement securely
             char* condition = strtok(NULL, "\n");
             if (condition) {
                 // implement securely
-            } else {
+            }
+            else {
                 printf("Missing condition for breakif statement\n");
             }
-        } else if (strcmp(token, "forever") == 0) {
+        }
+        else if (strcmp(token, "forever") == 0) {
             // Implement securely
             // This is an infinite loop
-        } else {
+        }
+        else {
             // Check if it's an attempt to call an imported C function
             for (int i = 0; i < numImportedFunctions; i++) {
                 if (strcmp(token, importedFunctions[i].name) == 0) {
@@ -203,7 +208,8 @@ void import_function(const char* name, void* function) {
         importedFunctions[numImportedFunctions].name = name;
         importedFunctions[numImportedFunctions].function = function;
         numImportedFunctions++;
-    } else {
+    }
+    else {
         printf("Maximum number of imported functions reached.\n");
     }
 }
@@ -212,7 +218,8 @@ void import_function(const char* name, void* function) {
 void call_imported_function(const char* name) {
     // Find the imported function by name
     for (int i = 0; i < numImportedFunctions; i++) {
-        if (strcmp(importedFunctions[i].name, name) == 0) {
+        if (
+            strcmp(importedFunctions[i].name, name) == 0) {
             // Call the imported C function
             // Example: ((void (*)())importedFunctions[i].function)();
             break;
